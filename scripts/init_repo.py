@@ -9,7 +9,7 @@ import sys
 SKILL = Path(__file__).resolve().parents[1]
 TEMPLATE = SKILL / "assets" / "repository"
 TEMPLATE_FILES = ["build.py", "render_site.py", "update.py", "README.md", "AGENTS.md",
-                  "research/README.md", "workflow.yml", "test_build.py", "research_ai.py", "test_research_ai.py"]
+                  "research/README.md", "workflow.yml", "test_build.py", "research_ai.py", "test_research_ai.py", "digest.py", "test_digest.py"]
 
 
 def check_install():
@@ -17,6 +17,7 @@ def check_install():
     required += [TEMPLATE / name for name in TEMPLATE_FILES]
     required += [TEMPLATE / group / f"{topic}.json"
                  for topic in ("rsi", "harness") for group in ("topics", "catalog", "editorial")]
+    required += [TEMPLATE / "editions/rsi/2026-11-26.json"]
     missing = [str(path.relative_to(SKILL)) for path in required if not path.is_file()]
     if missing:
         raise ValueError("Incomplete skill installation: " + ", ".join(missing)
@@ -48,7 +49,8 @@ def initialize(target, topic, title=None, description=None):
     preset = TEMPLATE / "topics" / (topic + ".json")
     cfg = json.loads(preset.read_bytes()) if preset.is_file() else {
         "id": topic, "title": title or topic, "description": description or (title or topic) + " 研究订阅",
-        "keywords": [], "sources": [], "catalog": f"catalog/{topic}.json"}
+        "keywords": [], "sources": [], "catalog": f"catalog/{topic}.json",
+        "daily_brief": {"size": 10, "paper_target": 0.3, "paper_max": 0.4}}
     if title:
         cfg["title"] = title
     if description:
@@ -58,6 +60,9 @@ def initialize(target, topic, title=None, description=None):
         name = f"{group}/{topic}.json"
         source = TEMPLATE / name
         files[name] = source.read_bytes() if source.is_file() else json_bytes([])
+    # Dated examples stay dated; initialization never pretends they are today's issue.
+    for edition in sorted((TEMPLATE / "editions" / topic).glob("????-??-??.json")):
+        files[f"editions/{topic}/{edition.name}"] = edition.read_bytes()
     files["site.json"] = json_bytes({"topic": topic})
     if not (target / ".gitignore").exists():
         files[".gitignore"] = b"__pycache__/\n*.py[cod]\n.DS_Store\n.env\n.env.*\n"

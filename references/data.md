@@ -8,9 +8,10 @@
 | topics/harness.json | `id`、`title`、`description`、`keywords`、`sources`、`catalog`；每个订阅源含 `id,name,url,feed,filter`。url 是入口，feed 是经验证的 RSS/Atom 地址 |
 | catalog/harness.json | 数组，每条含 `group,topic,name,url,note`。group 为大类、topic 为小类；概括性渠道可使用空 url |
 | editorial/harness.json | 数组，每条含 `title,url,date,source,source_id,summary`。date 取自原始来源，支持 YYYY-MM-DD 或有时区的 ISO 日期时间；source_id 为稳定小写短名，可来自无 feed 的出版者 |
+| editions/主题/YYYY-MM-DD.json | 每日精选快照：`topic,date,timezone,lead,items`。保留每篇当日的概要与推荐理由，不随未来 editorial 修改而改变 |
 | research/ | Markdown 调研笔记、查询范围、日期、引文与待核问题 |
 | state/harness.json | 更新器合并维护的有限字段历史记录；人工修订优先写 editorial |
-| public/ | 网页、聚合 RSS、上游 OPML 和逐源抓取状态 |
+| public/ | 精选首页、issues/ 往期、archive.html 候选与目录、精选 RSS、上游 OPML 和逐源抓取状态。未启用每日模式时沿用普通聚合首页 |
 
 ## 一条真实的精选记录
 
@@ -33,3 +34,37 @@
 - 待复查。列出尚未核实的信息，给下次调研留下具体入口。
 
 预置 RSI 保留原分类目录里的材料条目和渠道。目录的计数包含论文、人物、机构与一般方法，不等于可自动订阅的独立站点数。
+
+## 每日精选字段与配置
+
+每日模式在基础 editorial 字段上补充以下字段。只有齐全且当日核对的条目才进入当日候选；没有 `headline` 的旧记录继续留在候选归档。
+
+| 字段 | 含义 |
+| --- | --- |
+| headline | 中文阅读标题，1–100 字符；title 仍保存原文标题 |
+| summary | 一两句具体概要，1–260 字符，不能直接留下长篇英文摘要 |
+| why_read | 一句话阅读理由，1–180 字符，说明能带走什么，与概要互补 |
+| kind | paper、engineering、research、assessment、perspective、podcast 中的一项 |
+| score | 编辑对相关性和阅读价值的 1–5 分判断 |
+| event_id | 稳定的事件 ID，同一成果的论文、博客和报道共用一个 ID |
+| reviewed_at | 实际打开原文核对的本地日期 YYYY-MM-DD |
+
+在 topics/主题.json 中设置：
+
+```json
+"daily_brief": {
+  "size": 10,
+  "paper_target": 0.3,
+  "paper_max": 0.4,
+  "recent_days": 14,
+  "max_age_days": 30,
+  "repeat_days": 7,
+  "max_per_source": 3,
+  "min_score": 3,
+  "timezone": "Asia/Shanghai"
+}
+```
+
+`digest.py --date YYYY-MM-DD --lead '本期导读'` 读取 editorial 和过去七天的 editions，按内容类型分配名额，缺少的类别让给其他内容，检查实际条数中的论文上限，然后保存快照。没有合格混合内容时返回失败并保留旧一期。`update.py` 只渲染既有 editions，不会生成中文或新日期。
+
+每日模式的 feed.xml 从精选快照产生，最近至多 200 篇，按原文 URL 去重。RSS pubDate 是该文入选的期刊日期，概要中另列原始发布日期；首页逐条展示原文日期。feeds.opml 仍是原始上游订阅，读者导入它会看到未筛选内容，不能用它代替精选 RSS。

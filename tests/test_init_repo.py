@@ -41,6 +41,11 @@ class InstallationTests(unittest.TestCase):
                 self.assertEqual((root / name).read_text(), "user content\n")
             self.assertTrue((root / "RESEARCH-FEED.md").exists())
             self.assertEqual(json.loads((root / "catalog/new-topic.json").read_text()), [])
+            subprocess.run([sys.executable, "-B", "update.py", "--offline"],
+                           cwd=root, check=True, capture_output=True)
+            self.assertIn("第一期精选正在整理", (root / "public/index.html").read_text())
+            self.assertTrue((root / "public/archive.html").exists())
+            self.assertEqual(ET.parse(root / "public/feed.xml").findall(".//item"), [])
             (root / "build.py").write_text("user modified\n")
             before = {p.relative_to(root): p.read_bytes() for p in root.rglob("*") if p.is_file()}
             with self.assertRaisesRegex(ValueError, "differs"):

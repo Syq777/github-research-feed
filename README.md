@@ -1,6 +1,6 @@
 # GitHub Research Feed
 
-一份可移植的 Agent Skill，用来在 GitHub 仓库中进行主题调研、积累可核验的资料，并发布读者可订阅的静态网页和 RSS。维护者提供主题和目标仓库，AI 按 SKILL.md 的同一流程执行。RSI 与 Agent Harness 为两个开箱示例，其他主题可从空白配置开始。
+一份可移植的 Agent Skill：从广泛来源选出每天值得读的研究进展，用中文说清楚文章讲什么、为什么值得读，发布到 GitHub Pages 与 RSS。默认每日最多 10 篇，论文目标三成、最多四成，其他名额在工程、研究、评测、观点和访谈间调整。维护者提供主题和目标仓库，AI 按 SKILL.md 调研、编辑和发布。完整来源目录保留在次级归档。
 
 [RSI 示例网站](https://syq777.github.io/rsi-research-feed/) · [RSS](https://syq777.github.io/rsi-research-feed/feed.xml) · [示例研究仓库](https://github.com/Syq777/rsi-research-feed)
 
@@ -23,9 +23,14 @@ python3 -B "${CODEX_HOME:-$HOME/.codex}/skills/github-research-feed/scripts/init
 
 - 「用 github-research-feed 在当前空仓库建立 RSI 调研订阅。保留我给你的来源大类和小类，跑一次，告诉我哪些源实际抓到了内容。」
 - 「调研这周长任务 Agent Harness 的进展，回到原文核实，将有出处的结论写进我的研究仓库，并更新订阅。」
+- 「更新今天的 RSI 精选，每篇给中文概要和一句阅读理由，不够十篇可以少选，论文不要超过四成。」
 - 「用同一 Skill 为一个新主题建立独立仓库，沿用采集、归档和 GitHub Pages 的流程。」
 
 `python3 scripts/init_repo.py --repo /path/to/my-research --topic harness` 可单独初始化。进入该仓库，运行 `python3 update.py` 获取实际条目，或用 `--offline` 从已有档案构建。完整工作流程见 [SKILL.md](SKILL.md)，配置见 [运行说明](references/github.md)。
+
+RSI 和新主题默认启用每日精选，Harness 预置保留普通归档模式。`update.py` 只采集和渲染；AI 查原文并补齐 editorial 后，运行 `digest.py --date YYYY-MM-DD --lead '本期导读'` 才生成新一期。RSI 附带带日期的示例，不能把示例日期改成安装日来伪装更新。
+
+中文精选需要模型参与。可复用本机 Codex 定时编辑和发布，不另配 API，电脑需在线；GitHub Actions 则每天更新原始候选。未生成新一期时首页保留最近一期及真实日期。可选云端 API 脚本仅发现候选，不等价于完整自动编辑。
 
 RSI 预置目录沿用提供材料的 11 大类、36 小类，包含 271 条入口和线索；其中 7 个端点配置为自动 RSS/Atom 抓取。其余目录条目需要按研究问题另行查阅，目录数量不代表已自动订阅或逐条核实的来源数量。可选 AI 调研目前只搜索 `topics/` 中已配置源的域名，结果留在 `research/` 待复核，不会自动进入正式 RSS。
 
