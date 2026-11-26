@@ -13,9 +13,11 @@
 | 同一文章的带斜杠和不带斜杠 URL 重复出现在网页与 RSS | 相同标题且仅路径末尾斜杠不同才合并，保留查询参数及精选 URL，精选摘要优先 | 回归覆盖重复、不同标题及不同查询参数 |
 | 首次 Pages 设置、自动写回与后续本地提交容易脱节 | 记录 Pages 启用 API、实际 URL 验证、再次修改前 fast-forward 同步；workflow 增加 tests 路径并显式选择 Python | 实际 GitHub Actions 构建和 Pages 部署成功 |
 
+GitHub 实际运行还提示旧版 Actions 使用已弃用的 Node 20。已从各官方仓库的最新 release 及 action.yml 核对并升级 checkout、setup-python、configure-pages、upload-pages-artifact、deploy-pages 到支持 Node 24 的版本。
+
 技能仓库增加 Linux/macOS 的初始化和生成仓库 CI。初始化为新研究仓库生成 `.gitignore`，并保留已有 README、AGENTS 和 ignore 文件；测试覆盖已有文件冲突不覆盖数据。
 
-首次抓取 7/7 源成功、88 条；再次抓取新增 0 条。人工检查发现并修复上述重复后，归档应为 87 条。首页、RSS、OPML、抓取状态均以 HTTP GET 检查，RSS self 链接指向实际 Pages 项目路径。
+首次抓取 7/7 源成功、88 条；再次抓取新增 0 条。人工检查发现并修复上述重复后，归档为 87 条。首页、RSS、OPML、抓取状态均以 HTTP GET 检查，RSS self 链接指向实际 Pages 项目路径。
 
 ## 范围与仍需人工判断的环节
 
