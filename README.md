@@ -4,6 +4,8 @@
 
 [RSI 示例网站](https://syq777.github.io/rsi-research-feed/) · [RSS](https://syq777.github.io/rsi-research-feed/feed.xml) · [示例研究仓库](https://github.com/Syq777/rsi-research-feed)
 
+[六领域 Top 20 与完整来源访问表](https://syq777.github.io/rsi-research-feed/sources.html)：先轮询完整动态来源池，再比较候选、读原文、挑出十条。不能找到十篇就停止。每期有自然的名字和 3–5 个关键词；重要性、公开入口读取和全文权限分别记录。RSI 初版有 270 个去重目录条目，185 个动态公开入口，六领域 Top 20 合并为 112 个重点入口。
+
 ## 安装
 
 开源分发时，把本目录作为 GitHub 仓库的根目录（保留 scripts/、references/、assets/）。在 Codex 的项目目录 .agents/skills/ 或 Claude Code 的项目目录 .claude/skills/ 下放置名为 github-research-feed 的完整文件夹。也可以使用客户端支持的个人技能目录。程序使用 Python 3.10+，支持 Linux 和 macOS，GitHub Actions 使用 Ubuntu。公共源的定时获取只需 Python 标准库。

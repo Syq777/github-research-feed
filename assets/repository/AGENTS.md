@@ -2,6 +2,8 @@
 
 先读 site.json、topics/、catalog/、editorial/、editions/、research/ 和 state/，按 github-research-feed Skill 维护。
 
+若存在 sources/主题.json，先运行 poll_sources.py 轮询所有登记动态源，记录失败和限制，不能找到十篇就停。查看各领域 Top 20 和完整池，比较候选并读入围原文；在 research/reviews 保存逐源筛查方法、入选/落选理由与 poll 指纹。机器链接初筛不等于精读。daily_brief.require_source_review 开启时，缺失覆盖记录会阻止生成新一期。每期有自然名字和 3–5 个具体关键词，digest.py 用 --name 和 --keywords 传入，名字体现实际条数。
+
 启用 daily_brief 时，首页与 RSS 发布每日精选，原始抓取和来源目录放在 archive.html。只运行 python3 update.py 不会生成新一期。制作新一期需实际阅读原文，核对首次发布日期，补齐 headline、summary、why_read、kind、score、event_id、reviewed_at，并运行 python3 digest.py --date YYYY-MM-DD --lead '本期导读'。
 
 默认最多 10 篇、论文目标 30% 且不超过实际条数的 40%；缺少的类型让给其他非论文内容，不凑数。从完整 catalog 发现线索，不限于 RSS 端点。同一事件和过去七天已选文章不重复。中文概要说明具体内容，阅读理由说明读者能带走什么；两者不要重复。无新一期保留原日期。

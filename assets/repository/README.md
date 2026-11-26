@@ -15,6 +15,8 @@
 
 ## 本地检查
 
+存在 sources/主题.json 时，先运行 `python3 poll_sources.py --topic 主题 --date YYYY-MM-DD` 检查完整来源池；不能因找到十篇提前结束。访问结果、候选比较与精读分别记录到 research/polls 和 research/reviews。每期使用自然名字和 3–5 个关键词，digest.py 的 `--name`、`--keywords` 提供这些字段。sources.html / sources.csv 展示重点源排名、重要性和访问实测；公开页面可读不等于全文免费。详见 Skill 的 references/source-review.md。
+
 使用 Python 3.10+ 和 Linux 或 macOS。每日模式先按 github-research-feed Skill 读原文、补齐 editorial 的中文 headline、summary、why_read、kind、score、event_id 和 reviewed_at，执行 `python3 digest.py --date YYYY-MM-DD --lead '本期导读'`。运行 `python3 -B -m unittest discover -s tests`，再运行 `python3 update.py` 构建。后者只刷新候选和渲染既有期刊，不会生成新一期。离线预览用 `python3 update.py --offline`。在仓库根目录运行 `python3 -m http.server 8000 --directory public`，打开 http://localhost:8000/ 。本地预览地址只供本机使用。线上构建从 Pages 配置读取实际网址及项目路径。
 
 ## GitHub 上自动更新

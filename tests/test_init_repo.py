@@ -27,6 +27,11 @@ class InstallationTests(unittest.TestCase):
                                cwd=root, check=True, capture_output=True)
                 self.assertTrue(ET.parse(root / "public/feed.xml").findall(".//item"))
                 if topic == "rsi":
+                    registry = json.loads((root / 'sources/rsi.json').read_text())
+                    self.assertEqual(len(registry['domains']), 6)
+                    self.assertTrue(all(len(d['top20']) == 20 for d in registry['domains']))
+                    self.assertTrue((root / 'public/sources.html').exists())
+                    self.assertTrue((root / 'public/sources.csv').exists())
                     catalog = json.loads((root / "catalog/rsi.json").read_text())
                     self.assertEqual(len({r["group"] for r in catalog}), 11)
                     self.assertEqual(len({r["topic"] for r in catalog}), 36)

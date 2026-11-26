@@ -9,7 +9,8 @@ import sys
 SKILL = Path(__file__).resolve().parents[1]
 TEMPLATE = SKILL / "assets" / "repository"
 TEMPLATE_FILES = ["build.py", "render_site.py", "update.py", "README.md", "AGENTS.md",
-                  "research/README.md", "workflow.yml", "test_build.py", "research_ai.py", "test_research_ai.py", "digest.py", "test_digest.py"]
+                  "research/README.md", "workflow.yml", "test_build.py", "research_ai.py", "test_research_ai.py", "digest.py", "test_digest.py",
+                  "poll_sources.py", "source_report.py", "test_poll_sources.py"]
 
 
 def check_install():
@@ -18,6 +19,8 @@ def check_install():
     required += [TEMPLATE / group / f"{topic}.json"
                  for topic in ("rsi", "harness") for group in ("topics", "catalog", "editorial")]
     required += [TEMPLATE / "editions/rsi/2026-11-26.json"]
+    required += [SKILL / 'references/source-review.md', TEMPLATE / 'sources/rsi.json', TEMPLATE / 'sources/access-notes.json']
+    required += [TEMPLATE / 'research' / group / '2026-11-26-rsi.json' for group in ('polls', 'reviews', 'source-audits')]
     missing = [str(path.relative_to(SKILL)) for path in required if not path.is_file()]
     if missing:
         raise ValueError("Incomplete skill installation: " + ", ".join(missing)
@@ -63,6 +66,12 @@ def initialize(target, topic, title=None, description=None):
     # Dated examples stay dated; initialization never pretends they are today's issue.
     for edition in sorted((TEMPLATE / "editions" / topic).glob("????-??-??.json")):
         files[f"editions/{topic}/{edition.name}"] = edition.read_bytes()
+    if (TEMPLATE / 'sources' / f'{topic}.json').exists():
+        files[f'sources/{topic}.json'] = (TEMPLATE / 'sources' / f'{topic}.json').read_bytes()
+        files['sources/access-notes.json'] = (TEMPLATE / 'sources/access-notes.json').read_bytes()
+        for group in ('polls', 'reviews', 'source-audits'):
+            for record in (TEMPLATE / 'research' / group).glob(f'????-??-??-{topic}.json'):
+                files[f'research/{group}/{record.name}'] = record.read_bytes()
     files["site.json"] = json_bytes({"topic": topic})
     if not (target / ".gitignore").exists():
         files[".gitignore"] = b"__pycache__/\n*.py[cod]\n.DS_Store\n.env\n.env.*\n"
