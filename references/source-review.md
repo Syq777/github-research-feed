@@ -11,6 +11,7 @@
 ## 完整一轮
 
 1. 查看当日本地日期、已有期刊与远端部署。若同日已完整发布且没有新的修订请求，只检查健康，不重复编一期。
+   每日先运行 balance.py 查看近七天领域/形式/来源和近四周覆盖。每周维护 weeks/YYYY-Www-主题.json：week 为 ISO 周（如 2026-W48），focus_domains 为零至两个领域 ID，reason 写近期缺口和当周证据。六个 ID 为 methods、engineering、science、safety、industry、perspectives。不要固定每天同一比例，也不要为补配额降低质量；重点只影响比较排序，不缩小轮询范围。require_week_plan 开启后新周不能沿用旧周计划。
 2. 运行 `python3 poll_sources.py --date YYYY-MM-DD`。它尝试全部动态来源，写 `research/polls/日期-主题.json`；无“够十篇就退出”的逻辑。公开页面、RSS、PDF、登录/订阅提示、403/限流、动态渲染和错误分别记录。HTTP 200 不等于读到全文，关键词未命中不等于源没有新内容。
 3. 查看六个领域的来源结果与全部候选链接，过滤导航、过期、重复与弱相关材料。重点源只取到空壳、首页导航或受限时，通过正常浏览/检索寻找公开入口；不绕过付费与登录。必要时修正 poll_url，并重新轮询。保留失败证据。
 4. 保存 `research/reviews/日期-主题.json`。`poll_sha256` 必须是 `poll_sources.fingerprint(poll)`；`source_reviews` 覆盖所有动态和 manual 源，每项有 source_id、decision（candidates/no_relevant/unavailable）、method、note。机器筛查要写 listing_keyword_screen，不能冒充人工精读。

@@ -10,7 +10,7 @@ SKILL = Path(__file__).resolve().parents[1]
 TEMPLATE = SKILL / "assets" / "repository"
 TEMPLATE_FILES = ["build.py", "render_site.py", "update.py", "README.md", "AGENTS.md",
                   "research/README.md", "workflow.yml", "test_build.py", "research_ai.py", "test_research_ai.py", "digest.py", "test_digest.py",
-                  "poll_sources.py", "source_report.py", "test_poll_sources.py"]
+                  "poll_sources.py", "source_report.py", "test_poll_sources.py", "balance.py", "test_balance.py"]
 
 
 def check_install():
@@ -21,6 +21,7 @@ def check_install():
     required += [TEMPLATE / "editions/rsi/2026-11-26.json"]
     required += [SKILL / 'references/source-review.md', TEMPLATE / 'sources/rsi.json', TEMPLATE / 'sources/access-notes.json']
     required += [TEMPLATE / 'research' / group / '2026-11-26-rsi.json' for group in ('polls', 'reviews', 'source-audits')]
+    required += [TEMPLATE / 'weeks/2026-W48-rsi.json']
     missing = [str(path.relative_to(SKILL)) for path in required if not path.is_file()]
     if missing:
         raise ValueError("Incomplete skill installation: " + ", ".join(missing)
@@ -73,6 +74,8 @@ def initialize(target, topic, title=None, description=None):
             for record in (TEMPLATE / 'research' / group).glob(f'????-??-??-{topic}.json'):
                 files[f'research/{group}/{record.name}'] = record.read_bytes()
     files["site.json"] = json_bytes({"topic": topic})
+    for plan in (TEMPLATE / 'weeks').glob(f'????-W??-{topic}.json'):
+        files[f'weeks/{plan.name}'] = plan.read_bytes()
     if not (target / ".gitignore").exists():
         files[".gitignore"] = b"__pycache__/\n*.py[cod]\n.DS_Store\n.env\n.env.*\n"
     # Existing files such as the user's README and agent instructions belong to the user.

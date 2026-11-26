@@ -1,6 +1,6 @@
 # GitHub Research Feed
 
-一份可移植的 Agent Skill：从广泛来源选出每天值得读的研究进展，用中文说清楚文章讲什么、为什么值得读，发布到 GitHub Pages 与 RSS。默认每日最多 10 篇，论文目标三成、最多四成，其他名额在工程、研究、评测、观点和访谈间调整。维护者提供主题和目标仓库，AI 按 SKILL.md 调研、编辑和发布。完整来源目录保留在次级归档。
+一份可移植的 Agent Skill：从广泛来源选出每天值得读的研究进展，用中文说清楚文章讲什么、为什么值得读，发布到 GitHub Pages 与 RSS。默认每日最多 10 篇，论文三成作为滚动参考、每天最多四成，其他名额在工程、研究、评测、观点和访谈间调整。维护者提供主题和目标仓库，AI 按 SKILL.md 调研、编辑和发布。完整来源目录保留在次级归档。
 
 [RSI 示例网站](https://syq777.github.io/rsi-research-feed/) · [RSS](https://syq777.github.io/rsi-research-feed/feed.xml) · [示例研究仓库](https://github.com/Syq777/rsi-research-feed)
 
@@ -39,3 +39,5 @@ RSI 预置目录沿用提供材料的 11 大类、36 小类，包含 271 条入�
 修改模板后运行 `python3 -B -m unittest discover -s tests`；CI 会在 Linux 和 macOS 上检查安装、初始化、离线输出及生成仓库的测试。首次实操问题与修复见 [验证记录](references/validation.md)。
 
 本项目的自有代码与流程采用 MIT 许可证。所引论文、外部文章、订阅源材料和商标由相应权利人持有。目录保留原文链接。
+
+按周看均衡：每天通过 balance.py 查看近七天的领域、文章形式与来源、近四周的覆盖；weeks/ 保存有依据的当周重点。每天不设固定分类名额，质量接近时补近期缺少的视角，重要进展可以连续关注。周重点不缩小全池轮询范围，也不允许为了补配额选低质量稿。
