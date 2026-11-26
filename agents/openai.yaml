@@ -1,0 +1,13 @@
+interface:
+  display_name: GitHub 主题研究与订阅
+  short_description: 用 AI 在 GitHub 仓库调研指定主题、归档资料并生成每日更新的网页与 RSS
+  default_prompt: 用 $github-research-feed 在这个 GitHub 仓库建立或更新我的主题研究订阅。
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

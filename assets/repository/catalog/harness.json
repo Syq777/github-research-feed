@@ -1,0 +1,93 @@
+[
+  {
+    "group": "研究与工程实践",
+    "topic": "工程博客",
+    "name": "Anthropic Engineering",
+    "url": "https://www.anthropic.com/engineering",
+    "note": "检索上下文工程、长期运行智能体与评测方法。"
+  },
+  {
+    "group": "研究与工程实践",
+    "topic": "工程博客",
+    "name": "OpenAI Engineering",
+    "url": "https://openai.com/news/engineering/",
+    "note": "工程实践、Codex 和大型代码库中的智能体。"
+  },
+  {
+    "group": "研究与工程实践",
+    "topic": "开发者博客",
+    "name": "OpenAI Developers",
+    "url": "https://developers.openai.com/blog/",
+    "note": "追踪工具执行、智能体运行时和开发者接口。"
+  },
+  {
+    "group": "研究与工程实践",
+    "topic": "工程博客",
+    "name": "LangChain Blog",
+    "url": "https://www.langchain.com/blog",
+    "note": "Deep Agents、LangGraph、上下文管理和评测实践。"
+  },
+  {
+    "group": "研究与工程实践",
+    "topic": "开放工具",
+    "name": "Hugging Face Blog",
+    "url": "https://huggingface.co/blog",
+    "note": "检索开放模型工具调用与智能体工程。"
+  },
+  {
+    "group": "代码与运行时",
+    "topic": "开源实现",
+    "name": "Deep Agents",
+    "url": "https://github.com/langchain-ai/deepagents",
+    "note": "通过源代码与发布说明追踪 harness 变化。"
+  },
+  {
+    "group": "代码与运行时",
+    "topic": "开源实现",
+    "name": "LangGraph",
+    "url": "https://github.com/langchain-ai/langgraph",
+    "note": "图式工作流、状态持久化与执行控制。"
+  },
+  {
+    "group": "代码与运行时",
+    "topic": "开源实现",
+    "name": "Codex CLI",
+    "url": "https://github.com/openai/codex",
+    "note": "编码智能体运行时、命令行工具与版本记录。"
+  },
+  {
+    "group": "代码与运行时",
+    "topic": "SDK",
+    "name": "OpenAI Agents SDK",
+    "url": "https://github.com/openai/openai-agents-python",
+    "note": "工具调用、交接、追踪和运行循环。"
+  },
+  {
+    "group": "原文精读",
+    "topic": "工程案例",
+    "name": "Harness design for long-running application development",
+    "url": "https://www.anthropic.com/research/harness-design-long-running-apps",
+    "note": "从网页视觉设计到全栈开发，作者展示如何拆分长期任务，并用独立的评估环节把笼统的质量要求转化为具体的修改反馈。"
+  },
+  {
+    "group": "原文精读",
+    "topic": "工程案例",
+    "name": "Harness engineering: leveraging Codex in an agent-first world",
+    "url": "https://openai.com/index/harness-engineering/",
+    "note": "一支工程团队记录从空仓库开始用 Codex 开发产品的过程，说明如何组织仓库知识、提供运行反馈，并通过自动检查约束架构。"
+  },
+  {
+    "group": "原文精读",
+    "topic": "工程案例",
+    "name": "Demystifying evals for AI agents",
+    "url": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
+    "note": "从任务、运行记录与最终环境状态出发，解释如何为多轮工具调用设计评测，并组合代码、模型和人工评分。"
+  },
+  {
+    "group": "原文精读",
+    "topic": "工程案例",
+    "name": "Effective harnesses for long-running agents",
+    "url": "https://www.anthropic.com/research/effective-harnesses-for-long-running-agents",
+    "note": "以跨上下文窗口开发应用为例，说明初始化智能体、功能清单、进度记录和端到端测试如何帮助后续智能体接手工作。"
+  }
+]

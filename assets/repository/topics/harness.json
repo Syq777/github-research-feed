@@ -1,0 +1,70 @@
+{
+  "id": "harness",
+  "title": "Agent Harness 信息源",
+  "description": "追踪 AI 智能体的执行环境、上下文管理、工具调用与评测。",
+  "keywords": [
+    "agent harness",
+    "agentic harness",
+    "coding harness",
+    "harness engineering",
+    "harness design",
+    "agent scaffold",
+    "agent loop",
+    "agent runtime",
+    "agent SDK",
+    "agents SDK",
+    "coding agent",
+    "agentic coding",
+    "long-running agent",
+    "long running agent",
+    "long-horizon agent",
+    "context engineering",
+    "context compaction",
+    "tool execution",
+    "tool calling",
+    "agent evaluation",
+    "agent eval",
+    "deep agents",
+    "deepagents",
+    "智能体运行时",
+    "上下文工程"
+  ],
+  "sources": [
+    {
+      "id": "langchain-blog",
+      "name": "LangChain Blog",
+      "url": "https://www.langchain.com/blog",
+      "feed": "https://www.langchain.com/blog/rss.xml",
+      "filter": true
+    },
+    {
+      "id": "deepagents-releases",
+      "name": "Deep Agents · GitHub Releases",
+      "url": "https://github.com/langchain-ai/deepagents/releases",
+      "feed": "https://github.com/langchain-ai/deepagents/releases.atom",
+      "filter": false
+    },
+    {
+      "id": "openai-developers",
+      "name": "OpenAI Developers",
+      "url": "https://developers.openai.com/blog/",
+      "feed": "https://developers.openai.com/rss.xml",
+      "filter": true
+    },
+    {
+      "id": "openai-news",
+      "name": "OpenAI News",
+      "url": "https://openai.com/news/",
+      "feed": "https://openai.com/news/rss.xml",
+      "filter": true
+    },
+    {
+      "id": "huggingface-blog",
+      "name": "Hugging Face Blog",
+      "url": "https://huggingface.co/blog",
+      "feed": "https://huggingface.co/blog/feed.xml",
+      "filter": true
+    }
+  ],
+  "catalog": "catalog/harness.json"
+}
