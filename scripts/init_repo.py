@@ -8,6 +8,20 @@ import sys
 
 SKILL = Path(__file__).resolve().parents[1]
 TEMPLATE = SKILL / "assets" / "repository"
+TEMPLATE_FILES = ["build.py", "render_site.py", "update.py", "README.md", "AGENTS.md",
+                  "research/README.md", "workflow.yml", "test_build.py", "research_ai.py", "test_research_ai.py"]
+
+
+def check_install():
+    required = [SKILL / "LICENSE", SKILL / "references/data.md", SKILL / "references/github.md"]
+    required += [TEMPLATE / name for name in TEMPLATE_FILES]
+    required += [TEMPLATE / group / f"{topic}.json"
+                 for topic in ("rsi", "harness") for group in ("topics", "catalog", "editorial")]
+    missing = [str(path.relative_to(SKILL)) for path in required if not path.is_file()]
+    if missing:
+        raise ValueError("Incomplete skill installation: " + ", ".join(missing)
+                         + ". Install the complete repository; a sparse root checkout omits subdirectories.")
+    return len(required)
 
 
 def json_bytes(data):
@@ -15,14 +29,14 @@ def json_bytes(data):
 
 
 def initialize(target, topic, title=None, description=None):
+    check_install()
     if not re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,79}", topic):
         raise ValueError("Use a topic ID of up to 80 lowercase letters, digits, dashes or underscores.")
     target = target.resolve()
     if target == SKILL or SKILL in target.parents:
         raise ValueError("Choose a research checkout outside the installed skill.")
     files = {}
-    for relative in ["build.py", "render_site.py", "update.py", "README.md", "AGENTS.md",
-                     "research/README.md", "workflow.yml", "test_build.py", "research_ai.py", "test_research_ai.py"]:
+    for relative in TEMPLATE_FILES:
         if relative == "workflow.yml":
             name = ".github/workflows/research-feed.yml"
         elif relative.startswith("test_"):
@@ -45,6 +59,8 @@ def initialize(target, topic, title=None, description=None):
         source = TEMPLATE / name
         files[name] = source.read_bytes() if source.is_file() else json_bytes([])
     files["site.json"] = json_bytes({"topic": topic})
+    if not (target / ".gitignore").exists():
+        files[".gitignore"] = b"__pycache__/\n*.py[cod]\n.DS_Store\n.env\n.env.*\n"
     # Existing files such as the user's README and agent instructions belong to the user.
     # Choose a documented fallback for these two names, and refuse any other collision.
     for original, alternative in [("README.md", "RESEARCH-FEED.md"), ("AGENTS.md", "RESEARCH-AGENT.md")]:
@@ -69,12 +85,18 @@ def initialize(target, topic, title=None, description=None):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--repo", required=True, type=Path, help="target research checkout")
-    parser.add_argument("--topic", required=True, help="rsi, harness, or a new topic ID")
+    parser.add_argument("--check", action="store_true", help="verify the installed scripts and templates without writing a repository")
+    parser.add_argument("--repo", type=Path, help="target research checkout")
+    parser.add_argument("--topic", help="rsi, harness, or a new topic ID")
     parser.add_argument("--title")
     parser.add_argument("--description")
     args = parser.parse_args()
     try:
+        if args.check:
+            print(f"Skill installation complete: {check_install()} required resources found.")
+            return 0
+        if not args.repo or not args.topic:
+            parser.error("--repo and --topic are required unless --check is used")
         count = initialize(args.repo, args.topic, args.title, args.description)
     except (ValueError, OSError) as exc:
         parser.exit(1, f"Initialization stopped: {exc}\n")

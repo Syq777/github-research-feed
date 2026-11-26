@@ -73,6 +73,15 @@ class FeedTests(unittest.TestCase):
         stale = {**first, "title": "Old", "date": "2023-01-01T00:00:00Z"}
         self.assertEqual(build.merge_items([first], [stale], []), [first])
 
+    def test_trailing_slash_duplicate_prefers_curated_without_changing_urls(self):
+        feed = build.normalized_item(article("https://lab.test/article", "Same article", "lab"))
+        curated = build.normalized_item(article("https://lab.test/article/", "Same article", "ed"))
+        self.assertEqual(build.merge_items([feed, curated], [feed], [curated]), [curated])
+        different_title = {**curated, "title": "Different page"}
+        self.assertEqual(len(build.merge_items([], [feed, different_title], [])), 2)
+        different_query = {**curated, "url": "https://lab.test/article/?version=2"}
+        self.assertEqual(len(build.merge_items([], [feed, different_query], [])), 2)
+
 
 class BuildTests(unittest.TestCase):
     def setUp(self):
@@ -167,7 +176,8 @@ class BuildTests(unittest.TestCase):
 
             def log_message(self, *args):
                 pass
-        with HTTPServer(("127.0.0.1", 0), Handler) as server:
+        # Exercise real HTTP without depending on the machine's reverse DNS.
+        with patch("socket.getfqdn", return_value="localhost"), HTTPServer(("127.0.0.1", 0), Handler) as server:
             cfg = self.read("topics/rsi.json")
             cfg["sources"] = [{**SOURCE, "feed": f"http://127.0.0.1:{server.server_port}/feed"}]
             self.put("topics/rsi.json", cfg)
